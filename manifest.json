@@ -12,14 +12,16 @@
         "default_icon": "hello_extensions.png"
     },
     "background": {
-        "service_worker": "service_worker.js"
+        "service_worker": "service-worker.js"
     },
     "content_scripts": [
         {
             "js": [
-                "content_scripts.js"
+                "content-script.js"
             ],
-            "matches": "https://www.linkedin.com/jobs/search/?currentJobId/*"
+            "matches": [
+                "https://www.linkedin.com/jobs/*"
+            ]
         }
     ]
 }
