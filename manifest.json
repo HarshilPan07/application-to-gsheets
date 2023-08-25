@@ -9,7 +9,7 @@
     ],
     "action": {
         "default_popup": "hello.html",
-        "default_icon": "hello_extensions.png"
+        "default_icon": "images/hello_extensions.png"
     },
     "background": {
         "service_worker": "service-worker.js"
@@ -19,8 +19,21 @@
             "js": [
                 "content-script.js"
             ],
+            "css": [
+                "content.css"
+            ],
             "matches": [
                 "https://www.linkedin.com/jobs/*"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "images/job-btn.png"
+            ],
+            "matches": [
+                "https://*.linkedin.com/*"
             ]
         }
     ]

@@ -8,7 +8,6 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
         chrome.tabs.sendMessage(tabID, {
             type: "NEW",
             jobID: urlParameters.get("currentJobId")
-        })    
-
+        });
     }
 })
