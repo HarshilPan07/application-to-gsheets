@@ -4,6 +4,7 @@
     "description": "Base Level Extension",
     "version": "1.0",
     "permissions": [
+        "identity",
         "storage",
         "tabs"
     ],
@@ -36,5 +37,11 @@
                 "https://*.linkedin.com/*"
             ]
         }
-    ]
+    ],
+    "oauth2": {
+        "client_id": "742099613730-d30ipjl4o9r4uutqa499daead7020ejp.apps.googleusercontent.com",
+        "scopes": [
+            "https://www.googleapis.com/auth/spreadsheets"
+        ]
+    }
 }
