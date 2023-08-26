@@ -15,6 +15,11 @@
     opacity: 1;
 }
 
+.add-job-btn:active {
+    background-color: #599E00;
+    border-color: rgb(107, 187, 0);
+}
+
 .btn-container {
     flex: 1;
 }
