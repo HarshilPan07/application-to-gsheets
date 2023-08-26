@@ -3,6 +3,16 @@
     min-height: 0;
     max-height: 40px;
     margin-left: 85%;
+    border-style: solid;
+    border-color: var(--color-action);
+    border-radius: 50%;
+    opacity: 0.6;
+    transition: 0.2s;
+}
+
+.add-job-btn:hover {
+    box-shadow: 0 0 0 2px #599E00;
+    opacity: 1;
 }
 
 .btn-container {

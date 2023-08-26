@@ -32,6 +32,8 @@
             if(linkedInBtnBar.firstElementChild) {
                 linkedInBtnBar.firstElementChild.appendChild(btnDiv);
             }
+
+            addJobBtn.addEventListener("click", addNewJobEventHandler);
         }
     }
 })();
