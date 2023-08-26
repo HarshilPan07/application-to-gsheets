@@ -1,3 +1,7 @@
 .add-job-btn {
-    display: inline-flex;
+    min-height: 0;
+}
+
+.btn-container {
+    min-height: 0;
 }
