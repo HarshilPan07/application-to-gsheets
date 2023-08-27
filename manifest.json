@@ -31,7 +31,8 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "images/job-btn.png"
+                "images/job-btn.png",
+                "images/job-added-btn.png"
             ],
             "matches": [
                 "https://*.linkedin.com/*"

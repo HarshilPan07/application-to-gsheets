@@ -1,7 +1,6 @@
-window.onload = function() {
-    document.querySelector('button').addEventListener('click', function() {
-      chrome.identity.getAuthToken({interactive: true}, function(token) {
-        console.log(token);
-      });
+window.onload = () => {
+    chrome.identity.getAuthToken( {interactive : true}, async (token) => {
+        console.log("token is " + token);
+        await chrome.storage.sync.set({ "user" : token });
     });
   };
