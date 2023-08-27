@@ -27,7 +27,20 @@
                 [user]: JSON.stringify([...allJobs, currentJob])
             });
         } else {
-            console.log('here');
+            const addJobBtn = document.getElementsByClassName("job-btn")[0];
+            
+            addJobBtn.src = chrome.runtime.getURL("images/job-btn.png");
+            addJobBtn.className = "job-btn add-job-btn";
+            addJobBtn.title = "Click to add to Google Sheets";
+
+            allJobs = await fetchAllJobs();            
+            allJobs = allJobs.filter((job) => {
+                return job !== currentJob;
+            });
+
+            chrome.storage.sync.set({
+                [user]: JSON.stringify([allJobs])
+            })
         }
     }
 
@@ -43,14 +56,15 @@
 
     const newJobLoaded = async () => {
         const addJobBtnExists = document.getElementsByClassName("job-btn")[0];
+        
         if(!user) {
             await chrome.storage.sync.get(["user"]).then((res) => {
                 user = res["user"];
             });
         }
+        
         allJobs = await fetchAllJobs();
         console.log(allJobs);
-        console.log(allJobs.includes(currentJob));
 
         if(!allJobs.includes(currentJob) && !addJobBtnExists) {
             const btnDiv = document.createElement("div");
@@ -69,7 +83,6 @@
                 linkedInBtnBar.firstElementChild.appendChild(btnDiv);
             }
             
-            
             addJobBtn.addEventListener("click", addNewJobEventHandler);
         } else if (allJobs.includes(currentJob) && addJobBtnExists) {
             const addJobBtn = document.getElementsByClassName("job-btn")[0];
@@ -84,29 +97,6 @@
             addJobBtn.className = "job-btn add-job-btn";
             addJobBtn.title = "Click to add to Google Sheets";
         }
-        
-        // job not saved AND no button
-        // job not saved AND button
-        // if(!addJobBtnExists) {                
-        //     const btnDiv = document.createElement("div");
-        //     const addJobBtn = document.createElement("img");
-
-        //     addJobBtn.src = chrome.runtime.getURL("images/job-btn.png");
-        //     addJobBtn.className = "job-btn add-job-btn";
-        //     addJobBtn.title = "Click to add to Google Sheets";
-            
-        //     btnDiv.className = "inline-flex btn-container";
-        //     btnDiv.appendChild(addJobBtn);
-
-        //     linkedInBtnBar = document.getElementsByClassName('mt5')[2];
-
-        //     if(linkedInBtnBar && linkedInBtnBar.firstElementChild) {
-        //         linkedInBtnBar.firstElementChild.appendChild(btnDiv);
-        //     }
-            
-            
-        //     addJobBtn.addEventListener("click", addNewJobEventHandler);
-        // }
     }
 })();
 

@@ -36,7 +36,7 @@
 }
 
 .job-added-btn:hover {
-    box-shadow: 0 0 0 2px #e04846;
+    box-shadow: 0 0 0 2px rgb(85, 207, 110);
     opacity: 0.6;
 }
 
