@@ -22,11 +22,13 @@
             addJobBtn.title = "Click to remove from Google Sheets";
             
             allJobs = await fetchAllJobs();
-
+            allJobs.push(currentJob);
+            
             chrome.storage.sync.set({
-                [user]: JSON.stringify([...allJobs, currentJob])
+                [user]: JSON.stringify(allJobs)
             });
-        } else {
+        } 
+        else {
             addJobBtn.src = chrome.runtime.getURL("images/job-btn.png");
             addJobBtn.className = "job-btn add-job-btn";
             addJobBtn.title = "Click to add to Google Sheets";
@@ -37,7 +39,7 @@
             });
 
             chrome.storage.sync.set({
-                [user]: JSON.stringify([allJobs])
+                [user]: JSON.stringify(allJobs)
             })
         }
     }
@@ -62,7 +64,7 @@
         }
         
         allJobs = await fetchAllJobs();
-        console.log(allJobs);
+        // console.log(allJobs);
 
         if(!allJobs.includes(currentJob) && !addJobBtnExists) {
             const btnDiv = document.createElement("div");
