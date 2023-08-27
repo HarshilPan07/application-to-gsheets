@@ -71,8 +71,22 @@
             
             
             addJobBtn.addEventListener("click", addNewJobEventHandler);
-        }
+        } else if (allJobs.includes(currentJob) && addJobBtnExists) {
+            const addJobBtn = document.getElementsByClassName("job-btn")[0];
 
+            addJobBtn.src = chrome.runtime.getURL("images/job-added-btn.png");
+            addJobBtn.className = "job-btn job-added-btn";
+            addJobBtn.title = "Click to remove from Google Sheets";
+        } else if (addJobBtnExists) {
+            const addJobBtn = document.getElementsByClassName("job-btn")[0];
+
+            addJobBtn.src = chrome.runtime.getURL("images/job-btn.png");
+            addJobBtn.className = "job-btn add-job-btn";
+            addJobBtn.title = "Click to add to Google Sheets";
+        }
+        
+        // job not saved AND no button
+        // job not saved AND button
         // if(!addJobBtnExists) {                
         //     const btnDiv = document.createElement("div");
         //     const addJobBtn = document.createElement("img");
