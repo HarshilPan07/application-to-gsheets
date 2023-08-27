@@ -14,9 +14,9 @@
     }
 
     const addNewJobEventHandler = async () => {
+        const addJobBtn = document.getElementsByClassName("job-btn")[0];
+
         if(!allJobs.includes(currentJob)) {
-            const addJobBtn = document.getElementsByClassName("add-job-btn")[0];
-        
             addJobBtn.src = chrome.runtime.getURL("images/job-added-btn.png");
             addJobBtn.className = "job-btn job-added-btn";
             addJobBtn.title = "Click to remove from Google Sheets";
@@ -27,8 +27,6 @@
                 [user]: JSON.stringify([...allJobs, currentJob])
             });
         } else {
-            const addJobBtn = document.getElementsByClassName("job-btn")[0];
-            
             addJobBtn.src = chrome.runtime.getURL("images/job-btn.png");
             addJobBtn.className = "job-btn add-job-btn";
             addJobBtn.title = "Click to add to Google Sheets";
