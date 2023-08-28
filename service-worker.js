@@ -1,34 +1,49 @@
 let users = [];
+let currentUser;
 
 window.onload = () => {
     chrome.identity.getAuthToken( {interactive : true}, async (token) => {
         console.log("token is " + token);
-        await chrome.storage.sync.set({ "user" : token });
         
-        chrome.identity.getProfileUserInfo({ accountStatus: 'ANY' }, async (user_info) => {
-            console.log(user_info.id);
+        chrome.identity.getProfileUserInfo({ accountStatus: 'ANY' }, async (userInfo) => {
+            console.log(userInfo.id);
             
-            await chrome.storage.sync.get("users").then( (res) => {
-                users = JSON.parse(res["users"]);
-            });
+            // await chrome.storage.sync.get("users").then( (res) => {
+            //     users = JSON.parse(res["users"]);
+            // });
+            users = await fetchAllUsers();
             
             console.log(users);
 
-            if(!users.includes(user_info.id)) {
-                users.push(user_info.id);
+            if(!users.includes(userInfo.id)) {
+                users.push(userInfo.id);
                 await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
             }
 
-            // chrome.tabs.query({active:true}, function(tabs){
-            //     // send the message to the content script
-            //     chrome.tabs.sendMessage(tabs[0].id, {
-            //         type: "USER",
-            //         userID: user_info.id
-            //     });               
-            // });
+            currentUser = userInfo.id;
         });
     });
 };
+
+chrome.identity.onSignInChanged.addListener(async (accountInfo, signedIn) => {
+    chrome.storage.sync.get("users").then((res) => {
+        users = JSON.parse(res["users"]);
+    })
+
+    if(!users.includes(accountInfo.id)) {
+        users.push(accountInfo.id);
+        await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
+    }
+
+    currentUser = accountInfo.id;
+
+    chrome.tabs.query({ active : true }, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, {
+            type: "USER",
+            userID: accountInfo.id
+        });
+    });
+})
 
 chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
     if(tab.url && changeInfo.status === "complete" && tab.url.includes("linkedin.com/jobs/")) {
@@ -38,8 +53,17 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
         console.log(urlParameters.get("currentJobId"));
 
         chrome.tabs.sendMessage(tabID, {
+            user: currentUser,
             type: "NEW",
             jobID: urlParameters.get("currentJobId")
         });
     }
 })
+
+const fetchAllUsers = () => {
+    return new Promise((resolve) => {
+        chrome.storage.sync.get(["users"], (obj) => {
+            resolve(obj["users"] ? JSON.parse(obj["users"]) : [])
+        })
+    })
+}

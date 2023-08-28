@@ -46,6 +46,7 @@
 
     chrome.runtime.onMessage.addListener((obj, sender, res) => {
         if(obj.type === "NEW") {
+            user = obj.user;
             currentJob = obj.jobID;
             console.log('1st');
             newJobLoaded();    
@@ -53,12 +54,6 @@
             console.log('2nd');
             user = obj.userID;
         }
-        // const { type, jobID } = obj;
-
-        // if(type === "NEW") {
-        //     currentJob = jobID;
-        //     newJobLoaded();
-        // }
     });
 
     const newJobLoaded = async () => {
@@ -73,7 +68,8 @@
         }
         
         allJobs = await fetchAllJobs();
-        // console.log(allJobs);
+        console.log("all jobs\n");
+        console.log(allJobs);
 
         if(!allJobs.includes(currentJob) && !addJobBtnExists) {
             const btnDiv = document.createElement("div");
