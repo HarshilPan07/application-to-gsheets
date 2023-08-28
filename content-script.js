@@ -45,18 +45,27 @@
     }
 
     chrome.runtime.onMessage.addListener((obj, sender, res) => {
-        
-        const { type, jobID } = obj;
-
-        if(type === "NEW") {
-            currentJob = jobID;
-            newJobLoaded();
+        if(obj.type === "NEW") {
+            currentJob = obj.jobID;
+            console.log('1st');
+            newJobLoaded();    
+        } else if(obj.type === "USER") {
+            console.log('2nd');
+            user = obj.userID;
         }
+        // const { type, jobID } = obj;
+
+        // if(type === "NEW") {
+        //     currentJob = jobID;
+        //     newJobLoaded();
+        // }
     });
 
     const newJobLoaded = async () => {
         const addJobBtnExists = document.getElementsByClassName("job-btn")[0];
-        
+        let x = await chrome.storage.sync.get();
+        console.log(x);
+
         if(!user) {
             await chrome.storage.sync.get(["user"]).then((res) => {
                 user = res["user"];
