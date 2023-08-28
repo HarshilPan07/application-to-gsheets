@@ -1,6 +1,14 @@
 let users = [];
 let currentUser;
 
+const fetchAllUsers = () => {
+    return new Promise((resolve) => {
+        chrome.storage.sync.get(["users"], (obj) => {
+            resolve(obj["users"] ? JSON.parse(obj["users"]) : [])
+        })
+    })
+}
+
 window.onload = () => {
     chrome.identity.getAuthToken( {interactive : true}, async (token) => {
         console.log("token is " + token);
@@ -8,9 +16,6 @@ window.onload = () => {
         chrome.identity.getProfileUserInfo({ accountStatus: 'ANY' }, async (userInfo) => {
             console.log(userInfo.id);
             
-            // await chrome.storage.sync.get("users").then( (res) => {
-            //     users = JSON.parse(res["users"]);
-            // });
             users = await fetchAllUsers();
             
             console.log(users);
@@ -59,11 +64,3 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
         });
     }
 })
-
-const fetchAllUsers = () => {
-    return new Promise((resolve) => {
-        chrome.storage.sync.get(["users"], (obj) => {
-            resolve(obj["users"] ? JSON.parse(obj["users"]) : [])
-        })
-    })
-}

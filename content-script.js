@@ -60,12 +60,6 @@
         const addJobBtnExists = document.getElementsByClassName("job-btn")[0];
         let x = await chrome.storage.sync.get();
         console.log(x);
-
-        if(!user) {
-            await chrome.storage.sync.get(["user"]).then((res) => {
-                user = res["user"];
-            });
-        }
         
         allJobs = await fetchAllJobs();
         console.log("all jobs\n");
