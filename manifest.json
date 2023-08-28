@@ -6,6 +6,7 @@
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy6W3UKrBYCTz8A59IZWOKJwM2zfXEwZ6D0ifUDmQopSSAm1rr/NWAbFpbVbqsXFPC0v8Uf4Q6OonwRGQTsTML9N/dJVbBzOPMZTQK+LGReUs00RQb0Bzy+tNdQmFMy7qpQVhL45GWc6tcRrIWruk2n/rfqjjNPyjNCM3vcBsB9z5QRWxmZEOmRj3tCMU7b7bKV0qo/qmTBfK1jhX8NzY3886+xVAhbr27/EgvAScMYmZEUijnKC370/tX91ULQliTDNSQ10mOvD4/txYf8FEc4533yeH8ir+CKIAo/cY6pYH33z0RBrrgirirj3IpqgQscnm07WY5l9EkwhGb59kgQIDAQAB",
     "permissions": [
         "identity",
+        "identity.email",
         "storage",
         "tabs"
     ],
