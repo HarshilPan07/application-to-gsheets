@@ -107,8 +107,12 @@ extension/browser opens:
 
 1. check if user already authorized
 2. depending on above, do either: 
-    2.1 user logs in + authorizes -> save auth data, create sheet, save to storage
-    2.2 extension retrieves info -> retrieve sheet data from storage
+    2.1 user logs in + authorizes:
+        2.1.1 check if login already used before. if so:
+            2.1.2 retrieve data, set user val as that token, get sheet using api
+            2.1.3 save new user token data, use api to create new sheet for user
+    2.2 in oauth.js, extension retrieves info -> retrieve sheet data from storage
+
 3. 
 
 
