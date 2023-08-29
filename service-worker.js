@@ -49,7 +49,12 @@ const createNewSheet = (token) => {
             "Accept" : "application/json",
             "Content-Type" : "application/json"
         },
-        "contentType": "json"
+        body: JSON.stringify({
+            properties: {
+                title: "Job Application Tracker"
+            }
+        }),
+        contentType: "json"
     };
     
     var fetchURL = `https://sheets.googleapis.com/v4/spreadsheets`
