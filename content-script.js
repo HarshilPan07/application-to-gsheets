@@ -57,14 +57,15 @@
 
     chrome.runtime.onMessage.addListener((obj, sender, res) => {
         if(obj.type === "NEW") {
+            console.log('1st');
             user = obj.user;
             currentJob = obj.jobID;
             sheetID = obj.sheetID;
-            console.log('1st');
             newJobLoaded();    
         } else if(obj.type === "USER") {
             console.log('2nd');
             user = obj.userID;
+            sheetID = obj.sheetID;
         }
     });
 

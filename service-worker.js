@@ -109,13 +109,14 @@ window.onload = () => {
 
 chrome.identity.onSignInChanged.addListener(async (accountInfo, signedIn) => {
     console.log("SIGN IN ACTIVITY");
-    chrome.storage.sync.get("users").then((res) => {
-        users = JSON.parse(res["users"]);
-    })
+    users = await fetchAllUsers();
 
     if(!users.includes(accountInfo.id)) {
         users.push(accountInfo.id);
         await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
+        chrome.identity.getAuthToken( {interactive : true}, async (token) => {
+            createNewSheet(token);
+        })
     }
 
     currentUser = accountInfo.id;
@@ -123,7 +124,8 @@ chrome.identity.onSignInChanged.addListener(async (accountInfo, signedIn) => {
     chrome.tabs.query({ active : true }, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, {
             type: "USER",
-            userID: accountInfo.id
+            userID: accountInfo.id,
+            sheetID: sheetID
         });
     });
 })
