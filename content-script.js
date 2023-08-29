@@ -19,9 +19,20 @@
     }
 
     const getJobInformation = () => {
+        const infoContainer = document.getElementsByClassName("jobs-unified-top-card__primary-description")[0];
+        const infoText = infoContainer.children[0].textContent;
+        
+        const dotIndex = infoText.indexOf("·");
+        const leftPIndex = infoText.indexOf("(");
+        const rightPIndex = infoText.indexOf(")");
+
         const title = document.getElementsByClassName("t-24 t-bold jobs-unified-top-card__job-title")[0].textContent.trim();
-        const company = document.getElementsByClassName("app-aware-link")[0];
-        console.log(`title = ${title}, company = ${company}`);
+        const company = infoText.substring(0, dotIndex).trim();
+        const location = infoText.substring(dotIndex + 1, leftPIndex).trim();
+        const remote = infoText.substring(leftPIndex + 1, rightPIndex).trim();
+        
+        
+        console.log(`title = ${title}, company = ${company}, location = ${location}, remote = ${remote}`);
     }
 
     const addNewJobEventHandler = async () => {
