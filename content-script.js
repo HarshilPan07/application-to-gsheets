@@ -2,7 +2,7 @@
     let linkedInBtnBar;
     let currentJob = "";
     let user = null;
-    let sheetID = "xyz";
+    let sheetID = "";
     let allJobs = [];
 
     const fetchAllJobs = () => {
@@ -59,7 +59,7 @@
         if(obj.type === "NEW") {
             user = obj.user;
             currentJob = obj.jobID;
-            // sheetID = obj.sheetID;
+            sheetID = obj.sheetID;
             console.log('1st');
             newJobLoaded();    
         } else if(obj.type === "USER") {
