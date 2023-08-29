@@ -31,8 +31,10 @@
         const location = infoText.substring(dotIndex + 1, leftPIndex).trim();
         const remote = infoText.substring(leftPIndex + 1, rightPIndex).trim();
         
-        
-        console.log(`title = ${title}, company = ${company}, location = ${location}, remote = ${remote}`);
+        const dateObj = new Date();
+        const date = `${dateObj.getMonth()}/${dateObj.getDate()}/${dateObj.getFullYear()}`;
+        console.log(`date = ${date}, title = ${title}, company = ${company}, location = ${location}, remote = ${remote}`);
+        return { currentJob, company, title, location, remote };
     }
 
     const addNewJobEventHandler = async () => {
@@ -52,6 +54,8 @@
             };
 
             chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
+            const jobInfo = getJobInformation();
+            console.log(jobInfo);
         } else {
             addJobBtn.src = chrome.runtime.getURL("images/job-btn.png");
             addJobBtn.className = "job-btn add-job-btn";
