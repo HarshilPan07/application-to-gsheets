@@ -1,4 +1,20 @@
 const API_KEY = "AIzaSyBv5-AM7qNAF8kdOmNr8zF1pLSkIQ7XWJA";
+const DEFAULT_VALUE_RANGE = {
+    "majorDimension" : "ROWS",
+    "range" : "A1:G1",
+    "values" : [
+      [
+        "Job ID",
+        "Company",
+        "Title",
+        "Location",
+        "Remote",
+        "Date Applied",
+        "Other Info."
+      ]
+    ]
+};
+
 let users = [];
 let currentUser = "";
 let sheetID = "";
@@ -24,6 +40,44 @@ const getSheetID = (userID) => {
     });
 }
 
+const createNewSheet = (token) => {
+    var fetchOptions = {
+        method : "POST",
+        async : true,
+        headers: {
+            "Authorization" : "Bearer " + token,
+            "Accept" : "application/json",
+            "Content-Type" : "application/json"
+        },
+        "contentType": "json"
+    };
+    
+    var fetchURL = `https://sheets.googleapis.com/v4/spreadsheets`
+    fetch(fetchURL, fetchOptions)
+    .then((response) => response.json())
+    .then((obj) => {
+        console.log(obj);
+        sheetID = obj["spreadsheetId"];
+            
+        let fetchOptions = {
+            method : "PUT",
+            headers: {
+                Authorization : 'Bearer ' + token,
+                "Accept" : "application/json",
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(DEFAULT_VALUE_RANGE)
+        };
+        
+        var fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/A1:G1?valueInputOption=RAW&key=${API_KEY}`;
+        fetch(fetchURL, fetchOptions)
+        .then((response) => response.json())
+        .then((obj) => {
+            console.log("updated " + obj);
+        }); 
+    });
+}
+
 window.onload = () => {
     chrome.identity.getAuthToken( {interactive : true}, async (token) => {
         console.log("token is " + token);
@@ -38,78 +92,12 @@ window.onload = () => {
             if(!users.includes(userInfo.id)) {
                 users.push(userInfo.id);
                 await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
-
-                // let fetchOptions = {
-                //     method : "POST",
-                //     async : true,
-                //     headers: {
-                //         Authorization: 'Bearer ' + token,
-                //         'Content-Type': 'application/json'
-                //     },
-                //     'contentType': 'json'
-                // };
-
-                // fetch("https://sheets.googleapis.com/v4/spreadsheets/", fetchOptions)
-                // .then((response) => response.json())
-                // .then(function(data) {
-                //     console.log(data)
-                // });
-            }
-
-            let fetchOptions = {
-                method : "POST",
-                async : true,
-                headers: {
-                    "Authorization" : "Bearer " + token,
-                    'Content-Type' : "application/json"
-                },
-                "contentType": "json"
-            };
+                createNewSheet(token);
+            } 
             
-            var fetchURL = `https://sheets.googleapis.com/v4/spreadsheets`
-            fetch(fetchURL, fetchOptions)
-            .then((response) => response.json())
-            .then((obj) => {
-                console.log(obj);
-                sheetID = obj["spreadsheetId"];
-                
-                let valueRange = {
-                    "majorDimension" : "ROWS",
-                    "range" : "A1:G1",
-                    "values" : [
-                      [
-                        "Job ID",
-                        "Company",
-                        "Title",
-                        "Location",
-                        "Remote",
-                        "Date Applied",
-                        "Other Info."
-                      ]
-                    ]
-                };
-                
-                let fetchOptions = {
-                    method : "PUT",
-                    headers: {
-                        Authorization : 'Bearer ' + token,
-                        "Accept" : "application/json",
-                        "Content-Type" : "application/json"
-                    },
-                    body: JSON.stringify(valueRange)
-                };
-                var fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/A1:G1?valueInputOption=RAW&key=${API_KEY}`;
-                fetch(fetchURL, fetchOptions)
-                .then((response) => response.json())
-                .then((obj) => {
-                    console.log(obj);
-                });
-
-
-                
-            });
+            // createNewSheet(token);
             currentUser = userInfo.id;
-            // sheetID = await getSheetID(currentUser);
+            sheetID = sheetID == "" ? await getSheetID(currentUser) : sheetID;
         });
     });
 };
