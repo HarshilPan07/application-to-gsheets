@@ -41,7 +41,7 @@ const getSheetID = (userID) => {
 }
 
 const createNewSheet = (token) => {
-    var fetchOptions = {
+    let fetchOptions = {
         method : "POST",
         async : true,
         headers: {
@@ -57,7 +57,7 @@ const createNewSheet = (token) => {
         contentType: "json"
     };
     
-    var fetchURL = `https://sheets.googleapis.com/v4/spreadsheets`
+    let fetchURL = `https://sheets.googleapis.com/v4/spreadsheets`
     fetch(fetchURL, fetchOptions)
     .then((response) => response.json())
     .then((obj) => {
@@ -74,7 +74,7 @@ const createNewSheet = (token) => {
             body: JSON.stringify(DEFAULT_VALUE_RANGE)
         };
         
-        var fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/A1:G1?valueInputOption=RAW&key=${API_KEY}`;
+        let fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/A1:G1?valueInputOption=RAW&key=${API_KEY}`;
         fetch(fetchURL, fetchOptions)
         .then((response) => response.json())
         .then((obj) => {
