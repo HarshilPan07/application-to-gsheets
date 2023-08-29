@@ -1,5 +1,6 @@
 let users = [];
 let currentUser;
+let sheetID;
 
 const fetchAllUsers = () => {
     return new Promise((resolve) => {
@@ -31,6 +32,7 @@ window.onload = () => {
 };
 
 chrome.identity.onSignInChanged.addListener(async (accountInfo, signedIn) => {
+    console.log("SIGN IN ACTIVITY");
     chrome.storage.sync.get("users").then((res) => {
         users = JSON.parse(res["users"]);
     })
@@ -64,3 +66,9 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
         });
     }
 })
+
+
+/*
+    metrics tab
+    5 last recently added tab
+*/

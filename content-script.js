@@ -2,13 +2,28 @@
     let linkedInBtnBar;
     let currentJob = "";
     let user = null;
+    let sheetID = "xyz";
     let allJobs = [];
+
+    // const fetchAllJobs = () => {
+    //     console.log(user);
+    //     return new Promise((resolve) => {
+    //         chrome.storage.sync.get([user], (obj) => {
+    //             resolve(obj[user] ? JSON.parse(obj[user]) : []);
+    //         });
+    //     });
+    // }
 
     const fetchAllJobs = () => {
         console.log(user);
         return new Promise((resolve) => {
-            chrome.storage.sync.get([user], (obj) => {
-                resolve(obj[user] ? JSON.parse(obj[user]) : []);
+            chrome.storage.sync.get(user, (obj) => {
+                if(obj) {
+                    // console.log(obj);
+                    resolve(JSON.parse(obj[user])["savedJobs"]);
+                } else {
+                    resolve([]);
+                }
             });
         });
     }
@@ -21,26 +36,48 @@
             addJobBtn.className = "job-btn job-added-btn";
             addJobBtn.title = "Click to remove from Google Sheets";
             
+            // allJobs = await fetchAllJobs();
+            // allJobs.push(currentJob);
+            
+            // chrome.storage.sync.set({
+            //     [user]: JSON.stringify(allJobs)
+            // });
+
             allJobs = await fetchAllJobs();
             allJobs.push(currentJob);
             
-            chrome.storage.sync.set({
-                [user]: JSON.stringify(allJobs)
-            });
+            let newObject = {
+                "sheetID" : sheetID,
+                "savedJobs" : allJobs
+            };
+
+            chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
         } 
         else {
             addJobBtn.src = chrome.runtime.getURL("images/job-btn.png");
             addJobBtn.className = "job-btn add-job-btn";
             addJobBtn.title = "Click to add to Google Sheets";
 
-            allJobs = await fetchAllJobs();            
+            // allJobs = await fetchAllJobs();            
+            // allJobs = allJobs.filter((job) => {
+            //     return job !== currentJob;
+            // });
+
+            // chrome.storage.sync.set({
+            //     [user]: JSON.stringify(allJobs)
+            // })
+
+            allJobs = await fetchAllJobs();
             allJobs = allJobs.filter((job) => {
                 return job !== currentJob;
             });
+        
+            let newObject = { 
+                "sheetID" : sheetID, 
+                "savedJobs" : allJobs
+            };
 
-            chrome.storage.sync.set({
-                [user]: JSON.stringify(allJobs)
-            })
+            chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
         }
     }
 
@@ -114,6 +151,9 @@ extension/browser opens:
 
 3. 
 
-
+"userid" : {
+    "sheetID" : ""
+    "savedJobs" : []
+}
 
 */
