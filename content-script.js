@@ -18,9 +18,15 @@
         });
     }
 
+    const getJobInformation = () => {
+        const title = document.getElementsByClassName("t-24 t-bold jobs-unified-top-card__job-title")[0].textContent.trim();
+        const company = document.getElementsByClassName("app-aware-link")[0];
+        console.log(`title = ${title}, company = ${company}`);
+    }
+
     const addNewJobEventHandler = async () => {
         const addJobBtn = document.getElementsByClassName("job-btn")[0];
-
+        
         if(!allJobs.includes(currentJob)) {
             addJobBtn.src = chrome.runtime.getURL("images/job-added-btn.png");
             addJobBtn.className = "job-btn job-added-btn";
@@ -35,8 +41,7 @@
             };
 
             chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
-        } 
-        else {
+        } else {
             addJobBtn.src = chrome.runtime.getURL("images/job-btn.png");
             addJobBtn.className = "job-btn add-job-btn";
             addJobBtn.title = "Click to add to Google Sheets";
@@ -77,7 +82,7 @@
         allJobs = await fetchAllJobs();
         console.log("all jobs\n");
         console.log(allJobs);
-
+        getJobInformation();
         if(!allJobs.includes(currentJob) && !addJobBtnExists) {
             const btnDiv = document.createElement("div");
             const addJobBtn = document.createElement("img");

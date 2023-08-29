@@ -83,7 +83,7 @@ const createNewSheet = (token) => {
     });
 }
 
-window.onload = () => {
+chrome.webNavigation.onDOMContentLoaded.addListener(() => {
     chrome.identity.getAuthToken( {interactive : true}, async (token) => {
         console.log("token is " + token);
         
@@ -98,14 +98,14 @@ window.onload = () => {
                 users.push(userInfo.id);
                 await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
                 createNewSheet(token);
-            } 
-            
+            }
+
             // createNewSheet(token);
             currentUser = userInfo.id;
             sheetID = sheetID == "" ? await getSheetID(currentUser) : sheetID;
         });
     });
-};
+});
 
 chrome.identity.onSignInChanged.addListener(async (accountInfo, signedIn) => {
     console.log("SIGN IN ACTIVITY");
@@ -150,4 +150,16 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
 /*
     metrics tab
     5 last recently added tab
-*/
+
+
+    job-card-container relative job-card-list
+    job-card-container--clickable        
+    job-card-list--underline-title-on-hover jobs-search-results-list__list-item--active jobs-search-two-pane__job-card-container--viewport-tracking-20 "
+
+
+
+
+    job-card-container relative job-card-list
+    job-card-container--clickable    
+    job-card-list--underline-title-on-hover  jobs-search-two-pane__job-card-container--viewport-tracking-18 
+    */
