@@ -184,26 +184,30 @@ const deleteJob = (jobID) => {
 }
 
 chrome.webNavigation.onDOMContentLoaded.addListener(() => {
-    chrome.identity.getAuthToken( {interactive : true}, async (token) => {
-        console.log("token is " + token);
+    chrome.tabs.query({ active : true }, (tabs) => {
+        if(!tabs[0].url.includes("linkedin.com")) {
+            chrome.identity.getAuthToken( {interactive : true}, async (token) => {
+            console.log("token is " + token);
+                
+                chrome.identity.getProfileUserInfo({ accountStatus: 'ANY' }, async (userInfo) => {
+                    console.log(userInfo.id);
+                    
+                    users = await fetchAllUsers();
+                    
+                    console.log(users);
+                    currentUser = userInfo.id;
         
-        chrome.identity.getProfileUserInfo({ accountStatus: 'ANY' }, async (userInfo) => {
-            console.log(userInfo.id);
-            
-            users = await fetchAllUsers();
-            
-            console.log(users);
-            currentUser = userInfo.id;
-
-            if(!users.includes(userInfo.id)) {
-                users.push(userInfo.id);
-                await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
-                createNewSheet(token);
-                chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": []})} );
-            }
-
-            sheetID = sheetID == "" ? await getSheetID(currentUser) : sheetID;
-        });
+                    if(!users.includes(userInfo.id)) {
+                        users.push(userInfo.id);
+                        await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
+                        createNewSheet(token);
+                        chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": []})} );
+                    }
+        
+                    sheetID = sheetID == "" ? await getSheetID(currentUser) : sheetID;
+                });
+            });
+       }
     });
 });
 
