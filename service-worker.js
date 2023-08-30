@@ -185,7 +185,7 @@ const deleteJob = (jobID) => {
 
 chrome.webNavigation.onDOMContentLoaded.addListener(() => {
     chrome.tabs.query({ active : true }, (tabs) => {
-        if(!tabs[0].url.includes("linkedin.com")) {
+        if(tabs[0].url.includes("linkedin.com")) {
             chrome.identity.getAuthToken( {interactive : true}, async (token) => {
             console.log("token is " + token);
                 
