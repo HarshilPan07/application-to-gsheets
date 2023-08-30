@@ -74,6 +74,14 @@
             };
 
             chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
+            /*
+                to delete:
+                get spreadsheet object
+                search for jobID to delete
+                check if anything below
+                    if so, move all of it up
+                    batch update
+            */
         }
     }
 

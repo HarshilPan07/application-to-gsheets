@@ -18,7 +18,7 @@ const DEFAULT_VALUE_RANGE = {
 let users = [];
 let currentUser = "";
 let sheetID = "";
-
+let sheet = [];
 
 const fetchAllUsers = () => {
     return new Promise((resolve) => {
@@ -117,6 +117,26 @@ const appendToSheet = (jobInfo) => {
     });
 }
 
+const getSheet = () => {
+    chrome.identity.getAuthToken( {interactive : true}, async (token) => {
+        let fetchOptions = {
+            method: "GET",
+            headers : {
+                Authorization: 'Bearer ' + token,
+                Accept: "application/json"
+            }
+        }
+        let fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1?key=${API_KEY}`
+        
+        fetch(fetchURL, fetchOptions)
+        .then((response) => response.json())
+        .then((obj) => {
+            console.log(obj);
+            sheet = obj["values"];
+        });
+    })
+}
+
 chrome.webNavigation.onDOMContentLoaded.addListener(() => {
     chrome.identity.getAuthToken( {interactive : true}, async (token) => {
         console.log("token is " + token);
@@ -135,7 +155,6 @@ chrome.webNavigation.onDOMContentLoaded.addListener(() => {
                 createNewSheet(token);
                 chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": []})} );
             }
-
 
             sheetID = sheetID == "" ? await getSheetID(currentUser) : sheetID;
         });
@@ -171,7 +190,7 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
         const urlParameters = new URLSearchParams(queryParameter);
         
         console.log(urlParameters.get("currentJobId"));
-
+        getSheet();
         chrome.tabs.sendMessage(tabID, {
             type: "NEW",
             user: currentUser,
