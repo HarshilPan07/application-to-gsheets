@@ -40,7 +40,8 @@
     
     const addNewJobEventHandler = async () => {
         const addJobBtn = document.getElementsByClassName("job-btn")[0];
-        
+        const jobInfo = getJobInformation();
+
         if(!allJobs.includes(currentJob)) {
             addJobBtn.src = chrome.runtime.getURL("images/job-added-btn.png");
             addJobBtn.className = "job-btn job-added-btn";
@@ -55,7 +56,6 @@
             };
 
             chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
-            const jobInfo = getJobInformation();
             console.log(jobInfo);
             chrome.runtime.sendMessage({ type: "ADD-JOB", jobInfo: jobInfo});
         } else {
@@ -74,6 +74,7 @@
             };
 
             chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
+            chrome.runtime.sendMessage({ type: "DELETE-JOB", jobID: jobInfo.currentJob });
             /*
                 to delete:
                 get spreadsheet object

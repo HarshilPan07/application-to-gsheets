@@ -117,7 +117,7 @@ const appendToSheet = (jobInfo) => {
     });
 }
 
-const getSheet = () => {
+const getSheet = async () => {
     chrome.identity.getAuthToken( {interactive : true}, async (token) => {
         let fetchOptions = {
             method: "GET",
@@ -135,6 +135,52 @@ const getSheet = () => {
             sheet = obj["values"];
         });
     })
+}
+
+const deleteJob = (jobID) => {
+    getSheet();
+    console.log(sheet[1]);
+    console.log(jobID)
+    let rowIndexToDelete;
+    for(let i = 0; i < sheet.length; i++) {
+        if(sheet[i][0] === jobID) {
+            rowIndexToDelete = i;
+        }
+    }
+    console.log(rowIndexToDelete);
+    chrome.identity.getAuthToken( {interactive : true}, async (token) => {
+        let range = `A${rowIndexToDelete+1}:G${rowIndexToDelete+1}`;
+        let valueRange = {
+            "majorDimension" : "ROWS",
+            "range" : range,
+            "values" : [
+              [ "", "", "", "", "", ""]
+            ]
+        };
+
+        let fetchOptions = {
+            method : "PUT",
+            headers: {
+                Authorization : 'Bearer ' + token,
+                "Accept" : "application/json",
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(valueRange)
+        };
+        
+        let fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${range}?valueInputOption=RAW&key=${API_KEY}`
+        fetch(fetchURL, fetchOptions)
+        .then((response) => response.json())
+        .then((obj) => {
+            console.log(obj);
+        });
+    })
+
+    // Check if we need to rearrange rows below the one we are deleting
+    // if(rowIndexToDelete < sheet[0].length - 1) {
+    //     // Rearrange
+
+    // }
 }
 
 chrome.webNavigation.onDOMContentLoaded.addListener(() => {
@@ -190,7 +236,8 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
         const urlParameters = new URLSearchParams(queryParameter);
         
         console.log(urlParameters.get("currentJobId"));
-        getSheet();
+        let x = getSheet();
+        console.log(x);
         chrome.tabs.sendMessage(tabID, {
             type: "NEW",
             user: currentUser,
@@ -207,6 +254,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if(request.type === "ADD-JOB") {
         console.log(request.jobInfo);
         appendToSheet(request.jobInfo);
+    } else if(request.type === "DELETE-JOB") {
+        deleteJob(request.jobID);
     }
                   
 })
