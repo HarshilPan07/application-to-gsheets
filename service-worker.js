@@ -83,6 +83,40 @@ const createNewSheet = (token) => {
     });
 }
 
+const appendToSheet = (jobInfo) => {
+    chrome.identity.getAuthToken( {interactive : true}, async (token) => {
+        let valueRange = {
+            "majorDimension" : "ROWS",
+            "range" : "A1:G1",
+            "values" : [
+              [
+                jobInfo.currentJob,
+                jobInfo.company,
+                jobInfo.title,
+                jobInfo.location,
+                jobInfo.remote,
+                jobInfo.date
+              ]
+            ]
+        };
+
+        let fetchOptions = {
+            method : "POST",
+            headers: {
+                Authorization : 'Bearer ' + token,
+                "Accept" : "application/json",
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(valueRange)
+        };
+        
+        let fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/A1:G1:append?valueInputOption=RAW&key=${API_KEY}`;
+        fetch(fetchURL, fetchOptions)
+        .then((response) => response.json())
+        .then((obj) => console.log(obj));
+    });
+}
+
 chrome.webNavigation.onDOMContentLoaded.addListener(() => {
     chrome.identity.getAuthToken( {interactive : true}, async (token) => {
         console.log("token is " + token);
@@ -146,20 +180,18 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
     }
 })
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log(sender.tab ?
+                "from a content script:" + sender.tab.url :
+                "from the extension");
+    if(request.type === "ADD-JOB") {
+        console.log(request.jobInfo);
+        appendToSheet(request.jobInfo);
+    }
+                  
+})
 
 /*
     metrics tab
     5 last recently added tab
-
-
-    job-card-container relative job-card-list
-    job-card-container--clickable        
-    job-card-list--underline-title-on-hover jobs-search-results-list__list-item--active jobs-search-two-pane__job-card-container--viewport-tracking-20 "
-
-
-
-
-    job-card-container relative job-card-list
-    job-card-container--clickable    
-    job-card-list--underline-title-on-hover  jobs-search-two-pane__job-card-container--viewport-tracking-18 
-    */
+*/

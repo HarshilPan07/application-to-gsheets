@@ -4,6 +4,7 @@
     let user = null;
     let sheetID = "";
     let allJobs = [];
+    let API_KEY = "AIzaSyBv5-AM7qNAF8kdOmNr8zF1pLSkIQ7XWJA";
 
     const fetchAllJobs = () => {
         console.log(user);
@@ -33,10 +34,10 @@
         
         const dateObj = new Date();
         const date = `${dateObj.getMonth()}/${dateObj.getDate()}/${dateObj.getFullYear()}`;
-        console.log(`date = ${date}, title = ${title}, company = ${company}, location = ${location}, remote = ${remote}`);
-        return { currentJob, company, title, location, remote };
+        // console.log(`date = ${date}, title = ${title}, company = ${company}, location = ${location}, remote = ${remote}`);
+        return { currentJob, company, title, location, remote, date };
     }
-
+    
     const addNewJobEventHandler = async () => {
         const addJobBtn = document.getElementsByClassName("job-btn")[0];
         
@@ -56,6 +57,7 @@
             chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
             const jobInfo = getJobInformation();
             console.log(jobInfo);
+            chrome.runtime.sendMessage({ type: "ADD-JOB", jobInfo: jobInfo});
         } else {
             addJobBtn.src = chrome.runtime.getURL("images/job-btn.png");
             addJobBtn.className = "job-btn add-job-btn";
@@ -81,7 +83,7 @@
             user = obj.user;
             currentJob = obj.jobID;
             sheetID = obj.sheetID;
-            newJobLoaded();    
+            newJobLoaded();
         } else if(obj.type === "USER") {
             console.log('2nd');
             user = obj.userID;
