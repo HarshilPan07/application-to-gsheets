@@ -55,9 +55,9 @@
                 "savedJobs" : allJobs
             };
 
-            chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
+            await chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
             console.log(jobInfo);
-            chrome.runtime.sendMessage({ type: "ADD-JOB", jobInfo: jobInfo});
+            await chrome.runtime.sendMessage({ type: "ADD-JOB", jobInfo: jobInfo});
         } else {
             addJobBtn.src = chrome.runtime.getURL("images/job-btn.png");
             addJobBtn.className = "job-btn add-job-btn";
@@ -73,8 +73,8 @@
                 "savedJobs" : allJobs
             };
 
-            chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
-            chrome.runtime.sendMessage({ type: "DELETE-JOB", jobID: jobInfo.currentJob });
+            await chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
+            await chrome.runtime.sendMessage({ type: "DELETE-JOB", jobID: jobInfo.currentJob });
             /*
                 to delete:
                 get spreadsheet object
