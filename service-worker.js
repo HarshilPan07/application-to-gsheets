@@ -127,15 +127,16 @@ chrome.webNavigation.onDOMContentLoaded.addListener(() => {
             users = await fetchAllUsers();
             
             console.log(users);
+            currentUser = userInfo.id;
 
             if(!users.includes(userInfo.id)) {
                 users.push(userInfo.id);
                 await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
                 createNewSheet(token);
+                chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": []})} );
             }
 
-            // createNewSheet(token);
-            currentUser = userInfo.id;
+
             sheetID = sheetID == "" ? await getSheetID(currentUser) : sheetID;
         });
     });
