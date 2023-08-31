@@ -305,9 +305,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     everytime DOM loads and we are on linkedin
         getSheet() and save it to chrome.storage with 
-
-
-
-
-    
+  
 */

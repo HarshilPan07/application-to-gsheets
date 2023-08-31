@@ -1,18 +1,43 @@
 <html>
 
-<body>
+<head>
     <script src="popup.js"></script>
-    <div>
-        <div>
-            <div>
-                <h2>{} Jobs Saved Today</h2>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="body-container">
+        <div id="top-section">
+            <div id="jobs-applied-today">
+                <div id="jobs-applied-today-number">
+                    <h1>5</h1>
+                </div>
+                <div id="jobs-applied-today-bottom">
+                    <p>jobs applied to today</p>
+                </div>
+            </div>
+            <div id="metrics-section">
+                <div id="metrics-header">
+                    <h2>Metrics</h2>
+                </div>
+                <div id="metrics-main">
+                    <h3>
+                        Performance Details
+                    </h3>
+                </div>
             </div>
         </div>
-        <div>
-            <button>Add to Sheets</button>
+        <div id="botton-section">
+            <div id="recently-applied-header">
+                <h3>Most Recently Applied</h3>
+            </div>
+            <div id="recently-applied-list">
+                <h3 class="flex-job-item">job 1</h3>
+                <h3 class="flex-job-item">job 2</h3>
+                <h3 class="flex-job-item">job 3</h3>
+            </div>
         </div>
     </div>
-
 </body>
 
 </html>
