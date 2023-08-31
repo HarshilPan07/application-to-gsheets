@@ -117,27 +117,6 @@ const appendToSheet = (jobInfo) => {
     });
 }
 
-// const getSheet = async () => {
-//     return await chrome.identity.getAuthToken( {interactive : true}, async (token) => {
-//         let fetchOptions = {
-//             method: "GET",
-//             headers : {
-//                 Authorization: 'Bearer ' + token,
-//                 Accept: "application/json"
-//             }
-//         }
-//         let fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1?key=${API_KEY}`
-        
-//         return await fetch(fetchURL, fetchOptions)
-//         .then((response) => response.json())
-//         .then((obj) => {
-//             console.log(obj);
-//             // sheet = obj["values"];
-//             return sheet;
-//         });
-//     })
-// }
-
 const getSheet = async () => {
     return new Promise((resolve) => {
         chrome.identity.getAuthToken( {interactive : true}, async (token) => {
@@ -158,7 +137,6 @@ const getSheet = async () => {
             });
         })
     })
-    
 }
 
 const deleteJob = async (jobID) => {

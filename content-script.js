@@ -33,7 +33,7 @@
         const remote = infoText.substring(leftPIndex + 1, rightPIndex).trim();
         
         const dateObj = new Date();
-        const date = `${dateObj.getMonth()}/${dateObj.getDate()}/${dateObj.getFullYear()}`;
+        const date = `${dateObj.getMonth()+1}/${dateObj.getDate()}/${dateObj.getFullYear()}`;
         // console.log(`date = ${date}, title = ${title}, company = ${company}, location = ${location}, remote = ${remote}`);
         return { currentJob, company, title, location, remote, date };
     }
