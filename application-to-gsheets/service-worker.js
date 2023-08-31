@@ -17,8 +17,8 @@ const DEFAULT_VALUE_RANGE = {
 
 let users = [];
 let currentUser = "";
-let sheetID = "";
 let sheet = [];
+let sheetID = "";
 
 const fetchAllUsers = () => {
     return new Promise((resolve) => {
@@ -302,4 +302,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 /*
     metrics tab
     5 last recently added tab
+
+    everytime DOM loads and we are on linkedin
+        getSheet() and save it to chrome.storage with 
+
+
+
+
+    
 */
