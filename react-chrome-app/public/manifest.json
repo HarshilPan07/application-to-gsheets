@@ -1,25 +1,53 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
+  "manifest_version": 3,
+  "name": "App-To-Sheets-REACT",
+  "description": "Base Level Extension",
+  "version": "1.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy6W3UKrBYCTz8A59IZWOKJwM2zfXEwZ6D0ifUDmQopSSAm1rr/NWAbFpbVbqsXFPC0v8Uf4Q6OonwRGQTsTML9N/dJVbBzOPMZTQK+LGReUs00RQb0Bzy+tNdQmFMy7qpQVhL45GWc6tcRrIWruk2n/rfqjjNPyjNCM3vcBsB9z5QRWxmZEOmRj3tCMU7b7bKV0qo/qmTBfK1jhX8NzY3886+xVAhbr27/EgvAScMYmZEUijnKC370/tX91ULQliTDNSQ10mOvD4/txYf8FEc4533yeH8ir+CKIAo/cY6pYH33z0RBrrgirirj3IpqgQscnm07WY5l9EkwhGb59kgQIDAQAB",
+  "permissions": [
+    "identity",
+    "identity.email",
+    "storage",
+    "tabs",
+    "webNavigation"
+  ],
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "images/hello_extensions.png"
+  },
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "js": [
+        "content-script.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "matches": [
+        "<all_urls>",
+        "https://www.linkedin.com/jobs/*"
+      ]
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "images/job-btn.png",
+        "images/job-added-btn.png"
+      ],
+      "matches": [
+        "https://*.linkedin.com/*"
+      ]
+    }
+  ],
+  "oauth2": {
+    "client_id": "742099613730-d30ipjl4o9r4uutqa499daead7020ejp.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  }
 }
