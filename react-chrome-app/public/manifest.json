@@ -12,7 +12,7 @@
     "webNavigation"
   ],
   "action": {
-    "default_popup": "index.html",
+    "default_popup": "popup.html",
     "default_icon": "images/hello_extensions.png"
   },
   "background": {

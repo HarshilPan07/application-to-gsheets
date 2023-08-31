@@ -1,10 +1,10 @@
+/* eslint-disable no-undef */
 (() => {
     let linkedInBtnBar;
     let currentJob = "";
     let user = null;
     let sheetID = "";
     let allJobs = [];
-    let API_KEY = "AIzaSyBv5-AM7qNAF8kdOmNr8zF1pLSkIQ7XWJA";
 
     const fetchAllJobs = () => {
         console.log(user);

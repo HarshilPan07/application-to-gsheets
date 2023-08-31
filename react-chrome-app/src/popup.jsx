@@ -7,7 +7,7 @@ function Popup() {
             <h1>Hello, world!</h1>
             <p>This is a simple popup.</p>
         </div>
-    )
+    );
 }
 
 render(<Popup />, document.getElementById('react-target'));

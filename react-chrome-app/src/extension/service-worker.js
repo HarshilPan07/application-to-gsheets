@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const API_KEY = "AIzaSyBv5-AM7qNAF8kdOmNr8zF1pLSkIQ7XWJA";
 const DEFAULT_VALUE_RANGE = {
     "majorDimension" : "ROWS",
