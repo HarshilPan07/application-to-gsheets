@@ -164,7 +164,7 @@ const deleteJob = async (jobID) => {
                 
                 // Last row needs to be cleared out since it has no row below it
                 // and was already moved up one
-                if(i == sheet.length - 1) {
+                if(i === sheet.length - 1) {
                     valueRange["values"] = [["", "", "", "", "", ""]];
                 } else {
                     valueRange["values"] = [sheet[i+1]];
@@ -242,7 +242,7 @@ chrome.webNavigation.onDOMContentLoaded.addListener(() => {
                         chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": []})} );
                     }
         
-                    sheetID = sheetID == "" ? await getSheetID(currentUser) : sheetID;
+                    sheetID = sheetID === "" ? await getSheetID(currentUser) : sheetID;
                 });
             });
        }
