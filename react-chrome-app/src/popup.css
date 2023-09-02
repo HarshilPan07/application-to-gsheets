@@ -1,4 +1,45 @@
 body {
-    min-height: 400px;
-    min-width: 550px;
+    display: grid;
+    min-height: 600px;
+    min-width: 300px;
+    margin: 0;
+}
+
+#react-target {
+    display: grid;
+    grid-template-rows: 3fr 1fr 3fr;
+    align-self: stretch;
+    justify-self: stretch;
+    overflow: hidden;
+
+    background-color: #182f49;
+    backdrop-filter: blur(6px);
+    color: rgb(244, 244, 244);
+}
+
+#top-container {
+    grid-row: 1 / 2;
+    display: grid;
+    grid-template-rows: 90% auto;
+    justify-items: center;
+    align-items: center;
+    border: 1px solid whitesmoke;
+}
+
+#middle-container {
+    grid-row: 2 / 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    border: 1px solid whitesmoke;
+}
+
+#bottom-container {
+    grid-row: 3 / 4;
+    display: grid;
+    grid-template-rows: 10% auto;
+    justify-items: center;
+    align-items: center;
+    border: 1px solid whitesmoke;
 }
