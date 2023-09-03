@@ -1,8 +1,16 @@
-import React from "react";
+/* eslint-disable no-undef */
+import React, { useEffect } from "react";
 import { render } from "react-dom";
 import './popup.css';
 
 function Popup() {
+    useEffect(() => {
+        console.log('hello');
+        let x = chrome.storage.sync.get();
+        console.log(x);
+        // chrome.storage.sync.clear();
+    })
+
     return (
         <>
             <div id='top-container'>

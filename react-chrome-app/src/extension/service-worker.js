@@ -41,7 +41,7 @@ const getSheetID = (userID) => {
     });
 }
 
-const createNewSheet = (token) => {
+const createNewSheet = async (token) => {
     let fetchOptions = {
         method : "POST",
         async : true,
@@ -84,6 +84,28 @@ const createNewSheet = (token) => {
     });
 }
 
+const getSheet = async () => {
+    return new Promise((resolve) => {
+        chrome.identity.getAuthToken( {interactive : true}, async (token) => {
+            let fetchOptions = {
+                method: "GET",
+                headers : {
+                    Authorization: 'Bearer ' + token,
+                    Accept: "application/json"
+                }
+            }
+            let fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1?key=${API_KEY}`
+            
+            return await fetch(fetchURL, fetchOptions)
+            .then((response) => response.json())
+            .then((obj) => {
+                console.log(obj);
+                resolve(obj["values"]);
+            });
+        })
+    })
+}
+
 const appendToSheet = (jobInfo) => {
     chrome.identity.getAuthToken( {interactive : true}, async (token) => {
         let valueRange = {
@@ -114,35 +136,16 @@ const appendToSheet = (jobInfo) => {
         let fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/A1:G1:append?valueInputOption=RAW&key=${API_KEY}`;
         fetch(fetchURL, fetchOptions)
         .then((response) => response.json())
-        .then((obj) => console.log(obj));
+        .then((obj) => {
+            sheet.push(valueRange["values"][0]);
+            console.log(obj);
+        });
     });
 }
 
-const getSheet = async () => {
-    return new Promise((resolve) => {
-        chrome.identity.getAuthToken( {interactive : true}, async (token) => {
-            let fetchOptions = {
-                method: "GET",
-                headers : {
-                    Authorization: 'Bearer ' + token,
-                    Accept: "application/json"
-                }
-            }
-            let fetchURL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/Sheet1?key=${API_KEY}`
-            
-            return await fetch(fetchURL, fetchOptions)
-            .then((response) => response.json())
-            .then((obj) => {
-                console.log(obj);
-                resolve(obj["values"]);
-            });
-        })
-    })
-}
-
 const deleteJob = async (jobID) => {
-    sheet = await getSheet();
-    console.log(sheet);
+    // sheet = await getSheet();
+    console.log("just before deleting:", sheet);
     console.log(jobID)
     let rowIndexToDelete;
     for(let i = 0; i < sheet.length; i++) {
@@ -189,7 +192,13 @@ const deleteJob = async (jobID) => {
             console.log(body);
             fetch(fetchURL, fetchOptions)
             .then((res) => res.json())
-            .then((obj) => console.log(obj));
+            .then((obj) => {
+                console.log(obj);
+                // Update sheet by removing job
+                sheet = sheet.filter((job) => {
+                    return job[0] !== jobID;
+                })
+            });
         } 
         // Row to delete is the last row, so no need to use batchUpdate 
         // (just clear out last row)
@@ -216,6 +225,10 @@ const deleteJob = async (jobID) => {
             .then((response) => response.json())
             .then((obj) => {
                 console.log(obj);
+                // Update sheet by removing job
+                sheet = sheet.filter((job) => {
+                    return job[0] !== jobID;
+                })
             });
         }
     })
@@ -256,11 +269,12 @@ chrome.webNavigation.onDOMContentLoaded.addListener(() => {
                     if(!users.includes(userInfo.id)) {
                         users.push(userInfo.id);
                         await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
-                        createNewSheet(token);
-                        chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": []})} );
+                        await createNewSheet(token);
+                        await chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": []})} );
                     }
         
                     sheetID = sheetID === "" ? await getSheetID(currentUser) : sheetID;
+                    sheet = sheetID === "" ? [] : await getSheet();
                 });
             });
        }
@@ -294,8 +308,8 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
     if(tab.url && changeInfo.status === "complete" && tab.url.includes("linkedin.com/jobs/")) {
         const queryParameter = tab.url.split("?")[1];
         const urlParameters = new URLSearchParams(queryParameter);
-        
         console.log(urlParameters.get("currentJobId"));
+        console.log("inside tabsupdated", sheet);
         chrome.tabs.sendMessage(tabID, {
             type: "NEW",
             user: currentUser,
@@ -324,5 +338,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     everytime DOM loads and we are on linkedin
         getSheet() and save it to chrome.storage with 
-  
 */
