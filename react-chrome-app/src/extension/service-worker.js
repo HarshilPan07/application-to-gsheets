@@ -221,6 +221,24 @@ const deleteJob = async (jobID) => {
     })
 }
 
+const getTodaysJobs = () => {
+    const dateObj = new Date();
+    const month = dateObj.getMonth() < 9 ? `0${dateObj.getMonth()+1}` : `${dateObj.getMonth()}+1`;
+    const day = `${dateObj.getDate()}`;
+    const year = `${dateObj.getFullYear()}`;
+    const date = `${month}/${day}/${year}`;
+
+    const todaysJobs = [];
+
+    for(let i = 0; i < sheet.length; i++) {
+        if(sheet[i]['date'] === date) {
+            todaysJobs.append(sheet[i]);
+        }
+    }
+
+    return todaysJobs;
+}
+
 chrome.webNavigation.onDOMContentLoaded.addListener(() => {
     chrome.tabs.query({ active : true }, (tabs) => {
         if(tabs[0].url.includes("linkedin.com")) {
