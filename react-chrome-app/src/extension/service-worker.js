@@ -334,6 +334,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 /*
     metrics tab
+        - % up/down from yesterday
+        - areas/sectors/positon types applied to 
+            - fintech, healthcare, tech, full-stack, front-end, back-end, database, distributed systems, architecture
+        - sucess/response rates from different sectors
     5 last recently added tab
 
     everytime DOM loads and we are on linkedin

@@ -13,38 +13,68 @@ function Popup() {
 
     return (
         <>
-            <div id='top-container'>
-                <div id='top-jobs-applied-today'>
-                    5 applied today
+            <div id="left-metrics">
+                <div id='left-metric-1'>
+
                 </div>
-                <div id='top-total-jobs-applied'>
-                    25 applied total
+                <div id='left-metric-2'>
+
                 </div>
-            </div>
-            <div id='middle-container'>
-                <div id='middle-left-metric'>
-                    metric 1
-                </div>
-                <div id='middle-right-metric'>
-                    metric 2
+                <div id='left-metric-3'>
+
                 </div>
             </div>
-            <div id='bottom-container'>
-                <div id='bottom-title'>
-                    Most Recently Applied
+            <div id='center-panel'>
+                <div id='center-applied-today'>
+
                 </div>
-                <div id='most-recent-jobs-list'>
-                    <ul>
-                        <li>job1</li>
-                        <li>job2</li>
-                        <li>job3</li>
-                        <li>job4</li>
-                        <li>job5</li>
-                    </ul>
+                <div id='center-total-applied'>
+
                 </div>
+            </div>
+            <div id='right-metrics'>
+                <div id='right-metric-1'>
+
+                </div>
+                <div id='right-metric-2'>
+
+                </div>
+                <div id='right-metric-3'>
+
+                </div>
+            </div>
+            <div id='bottom-joblist-container'>
+                <div id='recently-applied-header'>
+                    <text>Recently Applied</text>
+                </div>
+                <ul id='recently-applied-list' class='scroll-bar-hide'>
+                    <li class='job-list-item'>Job 1</li>
+                    <li class='job-list-item'>Job 2</li>
+                    <li class='job-list-item'>Job 3</li>
+                    <li class='job-list-item'>Job 4</li>
+                    <li class='job-list-item'>Job 5</li>
+                    <li class='job-list-item'>Job 6</li>
+                </ul>
             </div>
         </>
     );
 }
 
 render(<Popup />, document.getElementById('react-target'));
+
+/*
+<div id='recently-applied-container'>
+                <div id='recently-applied-header'>
+                    <text>Recently Applied</text>
+                </div>
+                <ul id='recently-applied-list' class='scroll-bar-hide'>
+                    <li class='job-list-item'>Job 1</li>
+                    <li class='job-list-item'>Job 2</li>
+                    <li class='job-list-item'>Job 3</li>
+                    <li class='job-list-item'>Job 4</li>
+                    <li class='job-list-item'>Job 5</li>
+                    <li class='job-list-item'>Job 6</li>
+                </ul>
+            </div>
+
+*/
