@@ -13,7 +13,7 @@ function Popup() {
 
     return (
         <>
-            <div id="left-metrics">
+            <section id="left-metrics">
                 <div id='left-metric-1'>
 
                 </div>
@@ -23,16 +23,16 @@ function Popup() {
                 <div id='left-metric-3'>
 
                 </div>
-            </div>
-            <div id='center-panel'>
+            </section>
+            <section id='center-panel'>
                 <div id='center-applied-today'>
 
                 </div>
                 <div id='center-total-applied'>
 
                 </div>
-            </div>
-            <div id='right-metrics'>
+            </section>
+            <section id='right-metrics'>
                 <div id='right-metric-1'>
 
                 </div>
@@ -42,20 +42,68 @@ function Popup() {
                 <div id='right-metric-3'>
 
                 </div>
-            </div>
-            <div id='bottom-joblist-container'>
+            </section>
+            <section id='bottom-joblist-container'>
                 <div id='recently-applied-header'>
                     <text>Recently Applied</text>
                 </div>
                 <ul id='recently-applied-list' class='scroll-bar-hide'>
-                    <li class='job-list-item'>Job 1</li>
-                    <li class='job-list-item'>Job 2</li>
-                    <li class='job-list-item'>Job 3</li>
-                    <li class='job-list-item'>Job 4</li>
-                    <li class='job-list-item'>Job 5</li>
-                    <li class='job-list-item'>Job 6</li>
+                    <li class='job-list-item'>
+                        <div class='job-item-left-container'>
+                            <span class='job-item-title'>Software Engineer</span>
+                            <small class='job-item-company'>Company Name</small>
+                        </div>
+                        <div class='job-item-right-container'>
+                            <span>Location</span>
+                        </div>
+                    </li>
+                    <li class='job-list-item'>
+                        <div class='job-item-left-container'>
+                            <span class='job-item-title'>Software Engineer</span>
+                            <small class='job-item-company'>Company Name</small>
+                        </div>
+                        <div class='job-item-right-container'>
+                            <span>Location</span>
+                        </div>
+                    </li>
+                    <li class='job-list-item'>
+                        <div class='job-item-left-container'>
+                            <span class='job-item-title'>Software Engineer</span>
+                            <small class='job-item-company'>Company Name</small>
+                        </div>
+                        <div class='job-item-right-container'>
+                            <span>Location</span>
+                        </div>
+                    </li>
+                    <li class='job-list-item'>
+                        <div class='job-item-left-container'>
+                            <span class='job-item-title'>Software Engineer</span>
+                            <small class='job-item-company'>Company Name</small>
+                        </div>
+                        <div class='job-item-right-container'>
+                            <span>Location</span>
+                        </div>
+                    </li>
+                    <li class='job-list-item'>
+                        <div class='job-item-left-container'>
+                            <span class='job-item-title'>Software Engineer</span>
+                            <small class='job-item-company'>Company Name</small>
+                        </div>
+                        <div class='job-item-right-container'>
+                            <span>Location</span>
+                        </div>
+                    </li>
+                    <li class='job-list-item'>
+                        <div class='job-item-left-container'>
+                            <span class='job-item-title'>Software Engineer</span>
+                            <small class='job-item-company'>Company Name</small>
+                        </div>
+                        <div class='job-item-right-container'>
+                            <span>Location</span>
+                        </div>
+                    </li>
                 </ul>
-            </div>
+            </section>
         </>
     );
 }
