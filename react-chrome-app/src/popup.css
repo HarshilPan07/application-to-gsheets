@@ -1,7 +1,11 @@
 :root {
-    --main-color: rgb(178, 228, 189);
+    /* --main-color: rgb(178, 228, 189);
     --darker-main: rgb(164, 211, 174);
-    --color-to-fade-to: rgb(212, 222, 214);
+    --color-to-fade-to: rgb(212, 222, 214); */
+
+    --main-color: rgb(152, 229, 169);
+    --darker-main: rgb(139, 212, 155);
+    --color-to-fade-to: rgb(195, 230, 202);
 }
 
 .scroll-bar-hide::-webkit-scrollbar {
@@ -92,9 +96,8 @@ body {
     justify-content: space-evenly;
     align-items: center;
     border-radius: 5px;
-    /* background-color: var(--main-color); */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgb(161, 161, 161);
+    color: rgb(102 102 102);
 }
 
 a {
@@ -114,18 +117,11 @@ a {
 
 .metric-item {
     display: flex;
-    background-color: var(--darker-main);
+    background-color: var(--main-color);
     border-radius: 10px;
     margin: 20% 0 20% 0;
+    box-shadow: 0px 0px 5px -1px;
 }
-
-/* #metric-1 {
-    margin-left: 10%;
-}
-
-#metric-5 {
-    margin-right: 10%;
-} */
 
 #job-list-section {
     grid-row: 2 / 5;
@@ -154,7 +150,7 @@ a {
 
 #recently-applied-header>text {
     padding: 0 5px 0 5px;
-    color: rgb(98 104 101);
+    color: rgb(90 90 90);
 }
 
 #recently-applied-list {
