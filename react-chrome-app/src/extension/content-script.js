@@ -57,7 +57,7 @@
                 "sheetID" : sheetID,
                 "savedJobs" : allJobs
             };
-
+                    
             await chrome.storage.sync.set({ [user] : JSON.stringify(newObject) });
             console.log(jobInfo);
             await chrome.runtime.sendMessage({ type: "ADD-JOB", jobInfo: jobInfo});
@@ -111,7 +111,7 @@
         allJobs = await fetchAllJobs();
         console.log("all jobs\n");
         console.log(allJobs);
-        getJobInformation();
+
         if(!allJobs.includes(currentJob) && !addJobBtnExists) {
             const btnDiv = document.createElement("div");
             const addJobBtn = document.createElement("img");
@@ -164,6 +164,10 @@ extension/browser opens:
 "userid" : {
     "sheetID" : ""
     "savedJobs" : []
+}
+
+{
+    "106555378533970919969": "{\"sheetID\":\"1pqA61ZRESn6gofCTq3bptGIVo_CtU73xLn9IVF2uHhQ\",\"savedJobs\":[\"3702212235\",\"3695494374\",\"3697731089\",\"3700406175\",\"3703126931\"]}"
 }
 
 */

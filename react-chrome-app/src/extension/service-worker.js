@@ -234,7 +234,7 @@ const deleteJob = async (jobID) => {
     })
 }
 
-const getTodaysJobs = () => {
+const getTodaysJobs = async () => {
     const dateObj = new Date();
     const month = dateObj.getMonth() < 9 ? `0${dateObj.getMonth()+1}` : `${dateObj.getMonth()}+1`;
     const day = `${dateObj.getDate()}`;
@@ -248,7 +248,11 @@ const getTodaysJobs = () => {
             todaysJobs.append(sheet[i]);
         }
     }
+    
+    const oldObject = await chrome.storage.sync.get([currentUser]);    
+    console.log(oldObject);
 
+    // chrome.storage.sync.set({ [currentUser] : {...oldObject, }});
     return todaysJobs;
 }
 
@@ -270,7 +274,7 @@ chrome.webNavigation.onDOMContentLoaded.addListener(() => {
                         users.push(userInfo.id);
                         await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
                         await createNewSheet(token);
-                        await chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": []})} );
+                        await chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": [], "todaysJobs": []})} );
                     }
         
                     sheetID = sheetID === "" ? await getSheetID(currentUser) : sheetID;
@@ -329,7 +333,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     } else if(request.type === "DELETE-JOB") {
         deleteJob(request.jobID);
     }
-                  
+    getTodaysJobs();
 })
 
 /*
@@ -339,6 +343,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             - fintech, healthcare, tech, full-stack, front-end, back-end, database, distributed systems, architecture
         - sucess/response rates from different sectors
     5 last recently added tab
+    - locations on map?
+    - remote/hybrid?
+
 
     everytime DOM loads and we are on linkedin
         getSheet() and save it to chrome.storage with 
