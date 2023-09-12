@@ -1,0 +1,224 @@
+:root {
+    --main-color: rgb(152, 229, 169);
+    --darker-main: rgb(139, 212, 155);
+    --color-to-fade-to: rgb(215, 232, 219);
+}
+
+.scroll-bar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+
+body {
+    display: flex;
+    height: 350px;
+    width: 490px;
+    /* overflow: hidden; */
+    margin: 0;
+    background: transparent;
+}
+
+#react-target {
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+    width: 100%;
+    overflow: hidden;
+}
+
+#center-applied-today {
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    /* height: 100%; */
+    /* width: 100%; */
+    border-radius: 5px;
+    background-color: var(--main-color);
+    margin: 10px;
+    box-shadow: 0px 3px 3px;
+}
+
+#applied-today-section {
+    grid-row: 1 / 2;
+    grid-column: 1 / 3;
+    display: grid;
+    grid-template-rows: 3fr 1fr;
+    /* background: linear-gradient(var(--main-color), rgb(212, 222, 214)); */
+    background-color: var(--main-color);
+}
+
+#applied-today-top {
+    grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#applied-number {
+    display: flex;
+    justify-content: center;
+    flex: 3;
+    align-items: end;
+    /* height: 100%; */
+    width: 100%;
+    /* color: rgb(111, 111, 111); */
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 5vw;
+    margin: 0;
+}
+
+#applied-number>h1 {
+    margin: 0;
+}
+
+#applied-bottom-text {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-size: 3vw;
+}
+
+#total-applied {
+    grid-row: 2 / 3;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 5px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(102 102 102);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#metrics-section {
+    grid-row: 1 / 2;
+    grid-column: 3 / 7;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(5, 1fr);
+    background-color: var(--main-color);
+    padding: 0 5% 0 0;
+}
+
+.metric-item {
+    display: flex;
+    background-color: var(--main-color);
+    border-radius: 10px;
+    margin: 25% 0 25% 0;
+    box-shadow: 0px 0px 5px -1px;
+}
+
+#job-list-section {
+    grid-row: 2 / 5;
+    grid-column: span 6;
+    display: grid;
+    grid-template-rows: 1fr 5fr;
+    background-color: white;
+}
+
+#recently-applied-header {
+    grid-row: 1 / 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(var(--main-color), var(--color-to-fade-to));
+    box-shadow: 0px 3px 10px -1px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    -webkit-backdrop-filter: blur(14px);
+    -o-backdrop-filter: blur(14px);
+    -moz-backdrop-filter: blur(14px);
+
+    backdrop-filter: blur(14px);
+}
+
+#recently-applied-header>text {
+    padding: 0 5px 0 5px;
+    color: rgb(90 90 90);
+}
+
+#recently-applied-list {
+    grid-row: 2 / 6;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    width: 100%;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0 0 3% 0;
+}
+
+.job-list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 25%;
+    width: 93%;
+    flex: none;
+    border-radius: 7px;
+    background-color: white;
+    color: rgb(104, 106, 110);
+    box-shadow: 0px 1px 2px;
+    transition: 0.2s;
+}
+
+.job-list-item:hover {
+    background-color: var(--main-color);
+    /* background: linear-gradient(var(--main-color), var(--color-to-fade-to)); */
+    color: white
+}
+
+.job-list-item:hover small {
+    color: rgb(104, 106, 110);
+}
+
+.job-item-left-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.job-item-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 2;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.job-item-company {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(185, 189, 198);
+}
+
+.job-item-right-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
