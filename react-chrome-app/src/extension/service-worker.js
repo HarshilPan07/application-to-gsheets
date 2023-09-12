@@ -339,13 +339,31 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 /*
     metrics tab
         - % up/down from yesterday
+        - remote/hybrid?
         - areas/sectors/positon types applied to 
             - fintech, healthcare, tech, full-stack, front-end, back-end, database, distributed systems, architecture
         - sucess/response rates from different sectors
     5 last recently added tab
     - locations on map?
-    - remote/hybrid?
 
+    0.5s * 11
+
+    23.29s
+    21.25s
+    15.53s
+    15.08s
+    18.03s
+    20.85s
+    25.53s
+    17.87s
+    17.36s
+    21.81s
+    22.56s
+
+    avg = 19.92s
+
+    7 4
+    3 / 7
 
     everytime DOM loads and we are on linkedin
         getSheet() and save it to chrome.storage with 
