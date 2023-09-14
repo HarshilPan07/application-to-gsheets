@@ -274,7 +274,7 @@ chrome.webNavigation.onDOMContentLoaded.addListener(() => {
                         users.push(userInfo.id);
                         await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
                         await createNewSheet(token);
-                        await chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": [], "todaysJobs": []})} );
+                        await chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": [], "sheet": sheet})} );
                     }
         
                     sheetID = sheetID === "" ? await getSheetID(currentUser) : sheetID;
