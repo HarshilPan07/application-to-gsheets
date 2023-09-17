@@ -108,15 +108,29 @@ a {
     grid-gap: 5px;
     grid-template-columns: repeat(5, 1fr);
     background-color: var(--main-color);
-    padding: 0 5% 0 0;
+    padding: 0 3% 0 0;
 }
 
 .metric-item {
     display: flex;
+    flex: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    overflow: hidden;
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color: var(--main-color);
     border-radius: 10px;
     margin: 25% 0 25% 0;
-    box-shadow: 0px 0px 5px -1px;
+    box-shadow: 0px 0px 5px -1px black;
+}
+
+.metric-item>span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #job-list-section {
@@ -134,7 +148,9 @@ a {
     align-items: center;
     background: linear-gradient(var(--main-color), var(--color-to-fade-to));
     box-shadow: 0px 3px 10px -1px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 3vw;
     -webkit-backdrop-filter: blur(14px);
     -o-backdrop-filter: blur(14px);
     -moz-backdrop-filter: blur(14px);

@@ -18,7 +18,7 @@ const DEFAULT_VALUE_RANGE = {
 
 let users = [];
 let currentUser = "";
-let sheet = [];
+let sheet = null;
 let sheetID = "";
 
 const fetchAllUsers = () => {
@@ -235,52 +235,56 @@ const deleteJob = async (jobID) => {
 }
 
 const getTodaysJobs = async () => {
+    if(sheet === null) { 
+        await initializeUserInfo();
+    }
+    
     const dateObj = new Date();
     const month = dateObj.getMonth() < 9 ? `0${dateObj.getMonth()+1}` : `${dateObj.getMonth()}+1`;
     const day = `${dateObj.getDate()}`;
     const year = `${dateObj.getFullYear()}`;
     const date = `${month}/${day}/${year}`;
-
+    const testDate = '09/2/2023';
     const todaysJobs = [];
 
     for(let i = 0; i < sheet.length; i++) {
-        if(sheet[i]['date'] === date) {
-            todaysJobs.append(sheet[i]);
+        if(sheet[i][5] === testDate) {
+            todaysJobs.push(sheet[i]);
         }
     }
     
-    const oldObject = await chrome.storage.sync.get([currentUser]);    
-    console.log(oldObject);
-
-    // chrome.storage.sync.set({ [currentUser] : {...oldObject, }});
     return todaysJobs;
 }
 
-chrome.webNavigation.onDOMContentLoaded.addListener(() => {
-    chrome.tabs.query({ active : true }, (tabs) => {
-        if(tabs[0].url.includes("linkedin.com")) {
-            chrome.identity.getAuthToken( {interactive : true}, async (token) => {
-            console.log("token is " + token);
+const initializeUserInfo = async () => {
+    chrome.identity.getAuthToken( {interactive : true}, async (token) => {
+        console.log("token is " + token);
+            
+            chrome.identity.getProfileUserInfo({ accountStatus: 'ANY' }, async (userInfo) => {
+                console.log(userInfo.id);
                 
-                chrome.identity.getProfileUserInfo({ accountStatus: 'ANY' }, async (userInfo) => {
-                    console.log(userInfo.id);
-                    
-                    users = await fetchAllUsers();
-                    
-                    console.log(users);
-                    currentUser = userInfo.id;
-        
-                    if(!users.includes(userInfo.id)) {
-                        users.push(userInfo.id);
-                        await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
-                        await createNewSheet(token);
-                        await chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": [], "sheet": sheet})} );
-                    }
-        
-                    sheetID = sheetID === "" ? await getSheetID(currentUser) : sheetID;
-                    sheet = sheetID === "" ? [] : await getSheet();
-                });
+                users = await fetchAllUsers();
+                
+                console.log(users);
+                currentUser = userInfo.id;
+    
+                if(!users.includes(userInfo.id)) {
+                    users.push(userInfo.id);
+                    await chrome.storage.sync.set({ "users" : JSON.stringify(users) });
+                    await createNewSheet(token);
+                    await chrome.storage.sync.set( { [userInfo.id] : JSON.stringify({"sheetID": sheetID, "savedJobs": []})} );
+                }
+    
+                sheetID = sheetID === "" ? await getSheetID(currentUser) : sheetID;
+                sheet = sheetID === "" ? [] : await getSheet();
             });
+        });
+}
+
+chrome.webNavigation.onDOMContentLoaded.addListener(() => {
+    chrome.tabs.query({ active : true }, async (tabs) => {
+        if(tabs[0].url.includes("linkedin.com")) {
+            await initializeUserInfo();
        }
     });
 });
@@ -332,8 +336,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         appendToSheet(request.jobInfo);
     } else if(request.type === "DELETE-JOB") {
         deleteJob(request.jobID);
+    } else if(request.type === "GET-TODAYS-JOBS") {
+        (async () => {
+            const jobs =  await getTodaysJobs();
+            sendResponse({todaysJobs: jobs});
+        })();
     }
-    getTodaysJobs();
+
+    return true;
 })
 
 /*

@@ -1,26 +1,28 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import { render } from "react-dom";
 import './popup.css';
 
-function Popup() {
+import JobList from './components/JobList';
+
+const Popup = () => {
     useEffect(() => {
         console.log('hello');
         let x = chrome.storage.sync.get();
         console.log(x);
         // chrome.storage.sync.clear();
-        // getAppsDoneToday();
-    })
+        getAppsDoneToday();
+    }, [numAppliedToday])
 
     const getAppsDoneToday = () => {
-        chrome.tabs.query({ active: true }, (tabs) => {
-            chrome.tabs.sendMessage(tabs[0].id, {
-                type: "SHEET",
-            }).then((response) => {
-                console.log(response);
-                setNumAppliedToday(5);
-            });
-        });
+        chrome.runtime.sendMessage({ type: "GET-TODAYS-JOBS" })
+            .then((todaysJobs) => {
+                const jobs = todaysJobs['todaysJobs'];
+                console.log("inside popup", jobs);
+                setTodaysApps(jobs);
+                setNumAppliedToday(jobs.length);
+            })
     }
 
     const [numAppliedToday, setNumAppliedToday] = useState(0);
@@ -38,17 +40,39 @@ function Popup() {
                 </div>
             </section>
             <section id='metrics-section'>
-                <div class='metric-item' id='metric-1'></div>
-                <div class='metric-item' id='metric-2'></div>
-                <div class='metric-item' id='metric-3'></div>
-                <div class='metric-item' id='metric-4'></div>
-                <div class='metric-item' id='metric-5'></div>
+                <div class='metric-item' id='metric-1'>
+                    <span>17% down</span>
+                </div>
+                <div class='metric-item' id='metric-2'>
+                    <span>Applications</span>
+                    <span>Over Time</span>
+                </div>
+                <div class='metric-item' id='metric-3'>
+                    <span>Locations</span>
+                </div>
+                <div class='metric-item' id='metric-4'>
+                    <span>Response</span>
+                    <span>by</span>
+                    <span>Location</span>
+                </div>
+                <div class='metric-item' id='metric-5'>
+                    <small></small>
+                </div>
             </section>
             <section id='job-list-section'>
                 <div id='recently-applied-header'>
                     <text>Recent Applications</text>
                 </div>
-                <ul id='recently-applied-list' class='scroll-bar-hide'>
+                <JobList todaysApps={todaysApps} />
+            </section>
+        </>
+    );
+}
+
+render(<Popup />, document.getElementById('react-target'));
+
+/*
+<ul id='recently-applied-list' class='scroll-bar-hide'>
                     <li class='job-list-item'>
                         <div class='job-item-left-container'>
                             <span class='job-item-title'>Software Engineer</span>
@@ -95,104 +119,4 @@ function Popup() {
                         </div>
                     </li>
                 </ul>
-            </section>
-        </>
-    );
-}
-
-render(<Popup />, document.getElementById('react-target'));
-
-/* <>
-<section id="left-metrics">
-    <div id='left-metric-1'>
-
-    </div>
-    <div id='left-metric-2'>
-
-    </div>
-    <div id='left-metric-3'>
-
-    </div>
-</section>
-<section id='center-panel'>
-    <div id='center-applied-today'>
-        <span id='applied-number'><h1>16</h1></span>
-        <span id='applied-bottom-text'><small>Apps Done Today</small></span>
-    </div>
-    <div id='center-total-applied'>
-
-    </div>
-</section>
-<section id='right-metrics'>
-    <div id='right-metric-1'>
-
-    </div>
-    <div id='right-metric-2'>
-
-    </div>
-    <div id='right-metric-3'>
-
-    </div>
-</section>
-<section id='bottom-joblist-container'>
-    <div id='recently-applied-header'>
-        <text>Recently Applied</text>
-    </div>
-    <ul id='recently-applied-list' class='scroll-bar-hide'>
-        <li class='job-list-item'>
-            <div class='job-item-left-container'>
-                <span class='job-item-title'>Software Engineer</span>
-                <small class='job-item-company'>Company Name</small>
-            </div>
-            <div class='job-item-right-container'>
-                <span>Location</span>
-            </div>
-        </li>
-        <li class='job-list-item'>
-            <div class='job-item-left-container'>
-                <span class='job-item-title'>Software Engineer</span>
-                <small class='job-item-company'>Company Name</small>
-            </div>
-            <div class='job-item-right-container'>
-                <span>Location</span>
-            </div>
-        </li>
-        <li class='job-list-item'>
-            <div class='job-item-left-container'>
-                <span class='job-item-title'>Software Engineer</span>
-                <small class='job-item-company'>Company Name</small>
-            </div>
-            <div class='job-item-right-container'>
-                <span>Location</span>
-            </div>
-        </li>
-        <li class='job-list-item'>
-            <div class='job-item-left-container'>
-                <span class='job-item-title'>Software Engineer</span>
-                <small class='job-item-company'>Company Name</small>
-            </div>
-            <div class='job-item-right-container'>
-                <span>Location</span>
-            </div>
-        </li>
-        <li class='job-list-item'>
-            <div class='job-item-left-container'>
-                <span class='job-item-title'>Software Engineer</span>
-                <small class='job-item-company'>Company Name</small>
-            </div>
-            <div class='job-item-right-container'>
-                <span>Location</span>
-            </div>
-        </li>
-        <li class='job-list-item'>
-            <div class='job-item-left-container'>
-                <span class='job-item-title'>Software Engineer</span>
-                <small class='job-item-company'>Company Name</small>
-            </div>
-            <div class='job-item-right-container'>
-                <span>Location</span>
-            </div>
-        </li>
-    </ul>
-</section>
-</> */
+*/
